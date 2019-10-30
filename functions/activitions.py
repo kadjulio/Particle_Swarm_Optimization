@@ -21,7 +21,5 @@ def Cos(Z: float) -> float:
 def Gaussian(Z: float) -> float:
     return np.exp(-(Z^2/2))
 
-def Softmax(x: List(float)) -> List(float):
-    """Compute softmax values for each sets of scores in x."""
-    e_x = np.exp(x - np.max(x))
-    return e_x / e_x.sum()
+def Softmax(x: list) -> list:
+    return np.exp(x) / np.sum(np.exp(x), axis=0)
