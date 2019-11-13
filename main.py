@@ -2,13 +2,11 @@ import os
 
 import model as ml
 import functions.activitions as act
+from functions.cost import mse
 
 from sklearn import datasets
 import numpy as np
 import matplotlib.pyplot as plt
-
-np.random.seed(42)
-feature_set, labels = datasets.make_moons(1, noise=0.10)
 
 def file_to_dataset(file):
     text_file = open(file, "r")
@@ -32,5 +30,7 @@ for datafile in files:
     ann.add_layer(ml.Layer(1, 10, act.Sigmoid))
     ann.add_layer(ml.Layer(10, 4, act.Sigmoid))
     ann.add_layer(ml.Layer(4, 1, act.Sigmoid))
-    ann.train(epochs=1)
+    ann.vectorize_weights()
+    ann.update_weights()
+    # ann.train(epochs=1)
     exit(0) #to kill
