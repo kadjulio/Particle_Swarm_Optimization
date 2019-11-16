@@ -82,7 +82,7 @@ class MultiANN:
         for layer, n_weight in zip(self.layers, weights):
             layer.weights = n_weight
 
-    def train(self, epochs):
+    def train(self, config):
         losses = []
         losses_pso = []
         for input_x, y_true in zip(self.X, self.Y):
@@ -94,7 +94,7 @@ class MultiANN:
         # print("SHAPE: ", self.shape)
         # print("ACTIVATION :", self.activations)
         print(self.vector_weights)
-        self.vector_weights = np.asarray(PSO(func1, self.vector_weights, self.shape, self.activations, self.X, self.Y, 0, 400, 10).get_pos_best_g())
+        self.vector_weights = np.asarray(PSO(func1, self.vector_weights, self.shape, self.activations, self.X, self.Y, config).get_pos_best_g())
         print(self.vector_weights)
         self.update_weights()
         print("NEW WEIGHTS: ", self.layers[0].weights)

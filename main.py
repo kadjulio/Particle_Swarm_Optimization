@@ -8,6 +8,8 @@ from sklearn import datasets
 import numpy as np
 import matplotlib.pyplot as plt
 
+from test import configs
+
 def file_to_dataset(file):
     text_file = open(file, "r")
     lines = text_file.readlines()
@@ -26,11 +28,11 @@ files = os.listdir(path)
 for datafile in files:
     X, Y = file_to_dataset("Data/" + datafile)
 
-    ann = ml.MultiANN(X, Y)
-    ann.add_layer(ml.Layer(1, 4, act.Sigmoid))
-    ann.add_layer(ml.Layer(4, 4, act.Sigmoid))
-    ann.add_layer(ml.Layer(4, 1, act.Sigmoid))
-    # ann.vectorize_weights()
-    # ann.update_weights()
-    ann.train(epochs=1)
+    for config in configs:
+        print(config["shape"])
+        ann = ml.MultiANN(X, Y)
+        for idx, (shp, act) in enumerate(zip(config["shape"][:-1], config["activations"])):
+            ann.add_layer(ml.Layer(config["shape"][idx], config["shape"][idx + 1], act))
+        ann.train(config)
+    
     exit(0) #to kill
