@@ -35,4 +35,5 @@ for datafile in files:
             ann.add_layer(ml.Layer(config["shape"][idx], config["shape"][idx + 1], act))
         ann.train(config)
     
-    exit(0) #to kill
+    exit(0) # TODO delete main exit()
+    # TODO refacto code
