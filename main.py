@@ -27,10 +27,10 @@ for datafile in files:
     X, Y = file_to_dataset("Data/" + datafile)
 
     ann = ml.MultiANN(X, Y)
-    ann.add_layer(ml.Layer(1, 10, act.Sigmoid))
-    ann.add_layer(ml.Layer(10, 4, act.Sigmoid))
+    ann.add_layer(ml.Layer(1, 4, act.Sigmoid))
+    ann.add_layer(ml.Layer(4, 4, act.Sigmoid))
     ann.add_layer(ml.Layer(4, 1, act.Sigmoid))
-    ann.vectorize_weights()
-    ann.update_weights()
-    # ann.train(epochs=1)
+    # ann.vectorize_weights()
+    # ann.update_weights()
+    ann.train(epochs=1)
     exit(0) #to kill
