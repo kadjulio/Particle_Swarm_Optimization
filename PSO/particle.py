@@ -14,7 +14,7 @@ class Particle:
 
         for i in range(0, self.num_dimensions):
             self.velocity_i.append(random.uniform(-1,1))
-            self.position_i.append(random.uniform(-1,1))  #x0[i]) # TODO init pos
+            self.position_i.append(x0[i])
 
     def evaluate(self, costFunc, shape, activations, X, Y):
         self.err_i=costFunc(self.position_i, shape, activations, X, Y)
@@ -32,6 +32,12 @@ class Particle:
             vel_social = self.c2 * r2 * (pos_best_g[i] - self.position_i[i])
             self.velocity_i[i] = self.w * self.velocity_i[i] + vel_cognitive+vel_social
 
-    def update_position(self):
-        for i in range(0, self.num_dimensions):
-            self.position_i[i]=self.position_i[i]+self.velocity_i[i]
+    def update_position(self, bounds):
+        for i in range(0,self.num_dimensions):
+            self.position_i[i] = self.position_i[i]+self.velocity_i[i]
+
+            if self.position_i[i] > bounds[1]:
+                self.position_i[i] = bounds[1]
+
+            if self.position_i[i] < bounds[0]:
+                self.position_i[i] = bounds[0]

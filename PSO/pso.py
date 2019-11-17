@@ -13,8 +13,8 @@ class PSO():
 
         i=0
         while i < config["max_iter"]:
-            if (i % int(sqrt(config["max_iter"])) == 0):
-                print (i, self.err_best_g)
+            # if (i % int(sqrt(config["max_iter"])) == 0):
+            #     print (i, self.err_best_g)
 
             for j in range(0, config["nb_particles"]):
                 self.swarm[j].evaluate(costFunc, shape, activations, X, Y)
@@ -25,7 +25,7 @@ class PSO():
 
             for j in range(0, config["nb_particles"]):
                 self.swarm[j].update_velocity(self.pos_best_g)
-                self.swarm[j].update_position()
+                self.swarm[j].update_position(config["bounds"])
             i += 1
 
     def get_pos_best_g(self):

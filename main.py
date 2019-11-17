@@ -18,22 +18,27 @@ def file_to_dataset(file):
     Y = []
     for line in lines:
         val = line.split()
-        X.append(float(val[0]))
-        Y.append(float(val[1]))
+        if len(val) == 2:
+            X.append(float(val[0]))
+            Y.append(float(val[1]))
+        elif len(val) == 3:
+            X.append([float(val[0]), float(val[1])])
+            Y.append(float(val[2]))
     return X, Y
 
 path = "Data/"
 files = os.listdir(path)
 
 for datafile in files:
+    print(datafile)
     X, Y = file_to_dataset("Data/" + datafile)
-
-    for config in configs:
-        print(config["shape"])
+    X_shape = 1 if len(np.asarray(X).shape) == 1 else np.asarray(X).shape[1]
+    for idx, config in enumerate(configs):
+        print("\tCONFIG n°%d" % idx)
         ann = ml.MultiANN(X, Y)
-        for idx, (shp, act) in enumerate(zip(config["shape"][:-1], config["activations"])):
+        ann.add_layer(ml.Layer(X_shape, config["shape"][0], config["activations"][0]))
+        for idx, (shp, act) in enumerate(zip(config["shape"][:-1], config["activations"][1:])):
             ann.add_layer(ml.Layer(config["shape"][idx], config["shape"][idx + 1], act))
         ann.train(config)
-    
-    exit(0) # TODO delete main exit()
+    # exit()
     # TODO refacto code

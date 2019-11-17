@@ -14,26 +14,28 @@ def autobuild_ann(weights, shape, activations, X, Y):
     model.update_weights()
     return model
 
-def func1(weights, shape, activations, X, Y):
+def cost_function(weights, shape, activations, X, Y):
     model = autobuild_ann(weights, shape, activations, X, Y)
     Y_pred = []
     for input_x, y_true in zip(X, Y):
-            y_pred = model.feedforward(input_x)[0][0]
+            y_pred = model.feedforward(input_x)[0]
             Y_pred.append(y_pred)
     return loss_ann(Y, Y_pred)
 
 class MultiANN:
     
-    vector_weights = None
 
     def __init__(self, X, Y):
+        self.vector_weights = None
         self.shape = []
         self.activations = []
         self.X = X
         self.Y = Y
         self.layers = []
-        self.shape.append(1) # append nb of inputs, here 1
-    
+        if (len(np.asarray(X).shape) == 1):
+            self.shape.append(1)
+        else:
+            self.shape.append(np.asarray(X).shape[1])
     def add_layer(self, layer: Layer):
         self.layers.append(layer)
         self.shape.append(layer.w_shape[1])
@@ -48,7 +50,6 @@ class MultiANN:
             # print("layer %d: %s" % ( idx + 1, str(act_val)))
         
         self.Yo=act_val
-        # print(self.Yo)
         return self.Yo
 
     def weights_to_vector(self, weights):
@@ -87,25 +88,21 @@ class MultiANN:
         losses_pso = []
         for input_x, y_true in zip(self.X, self.Y):
             y_pred = self.feedforward(input_x)
-            loss = mse(y_pred[0][0], y_true)
+            loss = mse(y_pred[0], y_true)
             losses.append(loss)
             self.vectorize_weights()
         # print("WEIGHTS: ", self.layers[0].weights)
         # print("SHAPE: ", self.shape)
         # print("ACTIVATION :", self.activations)
-        print(self.vector_weights)
-        self.vector_weights = np.asarray(PSO(func1, self.vector_weights, self.shape, self.activations, self.X, self.Y, config).get_pos_best_g())
-        print(self.vector_weights)
+        self.vector_weights = np.asarray(PSO(cost_function, self.vector_weights, self.shape, self.activations, self.X, self.Y, config).get_pos_best_g())
         self.update_weights()
-        print("NEW WEIGHTS: ", self.layers[0].weights)
+        # print("NEW WEIGHTS: ", self.layers[0].weights)
         for input_x, y_true in zip(self.X, self.Y):
             y_pso_pred = self.feedforward(input_x)
-            loss_pso = mse(y_pso_pred[0][0], y_true)
+            loss_pso = mse(y_pso_pred[0], y_true)
             losses_pso.append(loss_pso)
-        print("loss pso -->", loss_pso)
-        print("loss -->", loss)
-        print("Global loss ----> ", sum(losses) / len (losses))
-        print("Global loss pso ----> ", sum(losses_pso) / len (losses_pso))
-        plt.plot(losses)
-        plt.plot(losses_pso)
-        plt.show()
+        print("\t\tloss ----> ", sum(losses) / len (losses))
+        print("\t\tloss after pso ----> ", sum(losses_pso) / len (losses_pso))
+        # plt.plot(losses)
+        # plt.plot(losses_pso)
+        # plt.show()
