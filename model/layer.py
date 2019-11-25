@@ -14,7 +14,7 @@ class Layer:
         # print(self.weights)
 
     def forward(self, X):
-        Z = np.dot(X, self.weights)# + self.bias # TODO add bias to PSO
+        Z = np.dot(X, self.weights)# + self.bias
         act_val = self.activation(Z)
         return act_val
             

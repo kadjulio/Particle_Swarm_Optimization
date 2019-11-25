@@ -1,6 +1,11 @@
 from .particle import Particle
 from math import sqrt
+
+
 class PSO():
+###
+# https://towardsdatascience.com/particle-swarm-optimisation-in-machine-learning-b01b1d2ad8a8
+###
     def __init__(self,costFunc,x0, shape, activations, X, Y, config):
 
         self.num_dimensions=len(x0)

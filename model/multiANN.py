@@ -36,6 +36,7 @@ class MultiANN:
             self.shape.append(1)
         else:
             self.shape.append(np.asarray(X).shape[1])
+
     def add_layer(self, layer: Layer):
         self.layers.append(layer)
         self.shape.append(layer.w_shape[1])
@@ -83,27 +84,24 @@ class MultiANN:
         for layer, n_weight in zip(self.layers, weights):
             layer.weights = n_weight
 
-    def train(self, config):
-        losses = []
-        losses_pso = []
-        for input_x, y_true in zip(self.X, self.Y):
-            y_pred = self.feedforward(input_x)
-            loss = mse(y_pred[0], y_true)
-            losses.append(loss)
-            self.vectorize_weights()
-        # print("WEIGHTS: ", self.layers[0].weights)
-        # print("SHAPE: ", self.shape)
-        # print("ACTIVATION :", self.activations)
-        self.vector_weights = np.asarray(PSO(cost_function, self.vector_weights, self.shape, self.activations, self.X, self.Y, config).get_pos_best_g())
-        self.update_weights()
-        # print("NEW WEIGHTS: ", self.layers[0].weights)
-        for input_x, y_true in zip(self.X, self.Y):
-            y_pso_pred = self.feedforward(input_x)
-            loss_pso = mse(y_pso_pred[0], y_true)
-            losses_pso.append(loss_pso)
-        # print("\t\tloss ----> ", sum(losses) / len (losses))
-        # print("\t\tloss after pso ----> ", sum(losses_pso) / len (losses_pso))
-        plt.plot(losses)
-        plt.plot(losses_pso)
-        plt.show()
+    def train(self, config, epochs):
+        for epoch in range(epochs):
+            losses = []
+            losses_pso = []
+            for input_x, y_true in zip(self.X, self.Y):
+                y_pred = self.feedforward(input_x)
+                loss = mse(y_pred[0], y_true)
+                losses.append(loss)
+                self.vectorize_weights()
+            self.vector_weights = np.asarray(PSO(cost_function, self.vector_weights, self.shape, self.activations, self.X, self.Y, config).get_pos_best_g())
+            self.update_weights()
+            for input_x, y_true in zip(self.X, self.Y):
+                y_pso_pred = self.feedforward(input_x)
+                loss_pso = mse(y_pso_pred[0], y_true)
+                losses_pso.append(loss_pso)
+            # print("\t\tloss ----> ", sum(losses) / len (losses))
+            # print("\t\tloss after pso ----> ", sum(losses_pso) / len (losses_pso))
+            # plt.plot(losses)
+            # plt.plot(losses_pso)
+            # plt.show()
         return sum(losses_pso) / len (losses_pso)

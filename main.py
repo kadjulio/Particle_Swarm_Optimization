@@ -40,7 +40,7 @@ for datafile in files:
         ann.add_layer(ml.Layer(X_shape, config["shape"][0], config["activations"][0]))
         for idx, (shp, act) in enumerate(zip(config["shape"][:-1], config["activations"][1:])):
             ann.add_layer(ml.Layer(config["shape"][idx], config["shape"][idx + 1], act))
-        mse = ann.train(config)
+        mse = ann.train(config, 1)
         if mse < best_mse:
             config["idx"] = indx + 1
             best_config = config
