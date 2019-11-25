@@ -196,6 +196,6 @@ configs = [
     #{ "shape": [3, 3, 1], "activations": [act.Tanh, act.Tanh, act.Tanh], "nb_particles": 50, "max_iter": 50, "inertia_cst": 0.8, "cognative_cst": 1.495, "social_cst": 1.495, "bounds": [-2.0, 2.0]},
     #{ "shape": [3, 3, 1], "activations": [act.Tanh, act.Tanh, act.Tanh], "nb_particles": 50, "max_iter": 100, "inertia_cst": 0.8, "cognative_cst": 1.495, "social_cst": 1.495, "bounds": [-2.0, 2.0]},
     #{ "shape": [3, 3, 1], "activations": [act.Tanh, act.Tanh, act.Tanh], "nb_particles": 50, "max_iter": 150, "inertia_cst": 0.8, "cognative_cst": 1.495, "social_cst": 1.495, "bounds": [-2.0, 2.0]},
-    #{ "shape": [3, 3, 1], "activations": [act.Tanh, act.Tanh, act.Tanh], "nb_particles": 50, "max_iter": 200, "inertia_cst": 0.8, "cognative_cst": 1.495, "social_cst": 1.495, "bounds": [-2.0, 2.0]},
+    { "shape": [3, 3, 1], "activations": [act.Tanh, act.Tanh, act.Tanh], "nb_particles": 50, "max_iter": 200, "inertia_cst": 0.8, "cognative_cst": 1.495, "social_cst": 1.495, "bounds": [-2.0, 2.0]},
 
 ]

@@ -1,20 +1,20 @@
 import random
 
 class Particle:
-    def __init__(self, x0, num_dimensions, config):
-        self.position_i = []          # particle position
-        self.velocity_i = []          # particle velocity
-        self.pos_best_i = []          # best position individual
-        self.err_best_i = -1          # best error individual
-        self.err_i = -1               # error individual
+    def __init__(self, weights, num_dimensions, config):
+        self.position_i = []
+        self.velocity_i = []
+        self.pos_best_i = []
+        self.err_best_i = -1
+        self.err_i = -1
         self.num_dimensions = num_dimensions
-        self.w = config["inertia_cst"]
-        self.c1 = config["cognative_cst"]
-        self.c2 = config["social_cst"]
+        self.ine_cst = config["inertia_cst"]
+        self.co_cst = config["cognative_cst"]
+        self.so_cst = config["social_cst"]
 
         for i in range(0, self.num_dimensions):
             self.velocity_i.append(random.uniform(-1,1))
-            self.position_i.append(x0[i])
+            self.position_i.append(weights[i])
 
     def evaluate(self, costFunc, shape, activations, X, Y):
         self.err_i = costFunc(self.position_i, shape, activations, X, Y)
@@ -28,9 +28,9 @@ class Particle:
             r1 = random.random()
             r2 = random.random()
 
-            vel_cognitive = self.c1 * r1 * (self.pos_best_i[i] - self.position_i[i])
-            vel_social = self.c2 * r2 * (pos_best_g[i] - self.position_i[i])
-            self.velocity_i[i] = self.w * self.velocity_i[i] + vel_cognitive+vel_social
+            vel_cognitive = self.co_cst * r1 * (self.pos_best_i[i] - self.position_i[i])
+            vel_social = self.so_cst * r2 * (pos_best_g[i] - self.position_i[i])
+            self.velocity_i[i] = self.ine_cst * self.velocity_i[i] + vel_cognitive + vel_social
 
     def update_position(self, bounds):
         for i in range(0,self.num_dimensions):

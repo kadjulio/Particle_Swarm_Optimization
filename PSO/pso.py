@@ -6,18 +6,17 @@ class PSO():
 ###
 # https://towardsdatascience.com/particle-swarm-optimisation-in-machine-learning-b01b1d2ad8a8
 ###
-    def __init__(self,costFunc,x0, shape, activations, X, Y, config):
+    def __init__(self, costFunc, weights, shape, activations, X, Y, config):
 
-        self.num_dimensions=len(x0)
+        self.num_dimensions=len(weights)
         self.err_best_g=-1
         self.pos_best_g=[]
         self.swarm=[]
     
         for i in range(0, config["nb_particles"]):
-            self.swarm.append(Particle(x0, self.num_dimensions, config))
+            self.swarm.append(Particle(weights, self.num_dimensions, config))
 
-        i=0
-        while i < config["max_iter"]:
+        for i in range(config["max_iter"]):
             # if (i % int(sqrt(config["max_iter"])) == 0):
             #     print (i, self.err_best_g)
 
@@ -31,7 +30,6 @@ class PSO():
             for j in range(0, config["nb_particles"]):
                 self.swarm[j].update_velocity(self.pos_best_g)
                 self.swarm[j].update_position(config["bounds"])
-            i += 1
 
     def get_pos_best_g(self):
         return self.pos_best_g
